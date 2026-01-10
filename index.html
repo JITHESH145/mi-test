@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Intelligence Test</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Neue', cursive;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6;
+            filter: blur(1px);
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.6;
+            }
+
+            90% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .welcome-bg {
+            background: linear-gradient(135deg, #667eea 0%, #f093fb 50%, #f5576c 100%);
+        }
+
+        .instructions-bg {
+            background: linear-gradient(135deg, #4facfe 0%, #9d50bb 50%, #f093fb 100%);
+        }
+
+        .test-bg {
+            background: linear-gradient(135deg, #5433ff 0%, #a855f7 50%, #ec4899 100%);
+        }
+
+        .complete-bg {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 50%, #00d4ff 100%);
+        }
+
+        .loading-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #fff700, #7fff00, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .brain-container {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            perspective: 1000px;
+        }
+
+        .brain {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateBrain 10s linear infinite;
+        }
+
+        @keyframes rotateBrain {
+            from {
+                transform: rotateY(0deg);
+            }
+
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+
+        .brain-lobe {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), inset 0 -5px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .brain-core {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle at 30% 30%, #FFE66D, #FF6B6B);
+            box-shadow: 0 0 60px rgba(255, 107, 107, 0.5);
+        }
+
+        .emojis {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .emoji {
+            font-size: 2.5rem;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+
+        input[type="text"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 15px 15px 15px 55px;
+            border-radius: 15px;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            font-family: 'Comic Neue', cursive;
+            font-weight: bold;
+            color: #6b21a8;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(255, 255, 0, 0.5);
+        }
+
+        input::placeholder {
+            color: #9ca3af;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.3rem;
+            font-family: 'Comic Neue', cursive;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #4ade80, #22d3ee);
+            color: white;
+            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(74, 222, 128, 0.5);
+        }
+
+        .btn-disabled {
+            background: #9ca3af;
+            color: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        .instruction-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            animation: slideIn 0.5s ease-out both;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .instruction-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .instruction-text {
+            color: white;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .highlight-box {
+            background: rgba(255, 235, 59, 0.8);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .highlight-box p {
+            color: #6b21a8;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 25px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4ECDC4, #44A08D, #093028);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            transition: width 0.5s ease-out;
+        }
+
+        .progress-text {
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .question-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .question-badge {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-name {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .question-box {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            color: white;
+            font-size: 1.3rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            padding: 18px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            transform: scale(1.03);
+        }
+
+        .option-btn.selected {
+            box-shadow: 0 0 0 4px white, 0 10px 40px rgba(0, 0, 0, 0.3);
+            transform: scale(1.03);
+        }
+
+        .option-label {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .option-a {
+            background: linear-gradient(135deg, #FF6B6B, #ff8e8e);
+        }
+
+        .option-b {
+            background: linear-gradient(135deg, #4ECDC4, #6fe7de);
+        }
+
+        .option-c {
+            background: linear-gradient(135deg, #FFE66D, #fff09e);
+        }
+
+        .option-d {
+            background: linear-gradient(135deg, #AA96DA, #c4b5e8);
+        }
+
+        .success-icon {
+            font-size: 6rem;
+            animation: bounce 1s ease-in-out infinite;
+            text-align: center;
+            display: block;
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .star {
+            font-size: 2.5rem;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .message-box p {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .message-box p:last-child {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-box {
+            background: rgba(255, 100, 100, 0.8);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .error-box p {
+            color: white;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .brain-container {
+                width: 150px;
+                height: 150px;
+            }
+
+            .emoji {
+                font-size: 2rem;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="particles" id="particles"></div>
+
+    <!-- Welcome Page -->
+    <div id="welcome-page" class="page welcome-bg">
+        <div class="card">
+            <h1>🌟 Welcome to the 🌟</h1>
+            <h2>Multiple Intelligence Test</h2>
+
+            <div class="brain-container">
+                <div class="brain">
+                    <div class="brain-core"></div>
+                    <div class="brain-lobe"
+                        style="transform: translate(-50%, -50%) rotateY(0deg) translateZ(50px); background: linear-gradient(135deg, #FF6B6B, #ff8e8e);">
+                    </div>
+                    <div class="brain-lobe"
+                        style="transform: translate(-50%, -50%) rotateY(45deg) translateZ(50px); background: linear-gradient(135deg, #4ECDC4, #6fe7de);">
+                    </div>
+                    <div class="brain-lobe"
+                        style="transform: translate(-50%, -50%) rotateY(90deg) translateZ(50px); background: linear-gradient(135deg, #FFE66D, #fff09e);">
+                    </div>
+                    <div class="brain-lobe"
+                        style="transform: translate(-50%, -50%) rotateY(135deg) translateZ(50px); background: linear-gradient(135deg, #AA96DA, #c4b5e8);">
+                    </div>
+                    <div class="brain-lobe"
+                        style="transform: translate(-50%, -50%) rotateY(180deg) translateZ(50px); background: linear-gradient(135deg, #F38181, #f5a0a0);">
+                    </div>
+                    <div class="brain-lobe"
+                        style="transform: translate(-50%, -50%) rotateY(225deg) translateZ(50px); background: linear-gradient(135deg, #95E1D3, #b5ede5);">
+                    </div>
+                    <div class="brain-lobe"
+                        style="transform: translate(-50%, -50%) rotateY(270deg) translateZ(50px); background: linear-gradient(135deg, #FCBAD3, #fdcde1);">
+                    </div>
+                    <div class="brain-lobe"
+                        style="transform: translate(-50%, -50%) rotateY(315deg) translateZ(50px); background: linear-gradient(135deg, #DDA0DD, #e8c0e8);">
+                    </div>
+                </div>
+            </div>
+
+            <div class="emojis">
+                <span class="emoji" style="animation-delay: 0s;">🧠</span>
+                <span class="emoji" style="animation-delay: 0.1s;">📚</span>
+                <span class="emoji" style="animation-delay: 0.2s;">🎨</span>
+                <span class="emoji" style="animation-delay: 0.3s;">🎵</span>
+                <span class="emoji" style="animation-delay: 0.4s;">🌿</span>
+                <span class="emoji" style="animation-delay: 0.5s;">🤝</span>
+                <span class="emoji" style="animation-delay: 0.6s;">💪</span>
+                <span class="emoji" style="animation-delay: 0.7s;">🔢</span>
+            </div>
+
+            <p style="color: white; text-align: center; font-size: 1.2rem; margin-bottom: 25px;">
+                Discover your unique superpowers! 🦸‍♀️🦸‍♂️
+            </p>
+
+            <form id="registration-form">
+                <div class="input-group">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="student-name" placeholder="Your Name" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">🏫</span>
+                    <input type="text" id="student-class" placeholder="Your Class (e.g., 5th Grade)" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">📱</span>
+                    <input type="tel" id="student-phone" placeholder="Phone Number" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Let's Start! 🚀</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Instructions Page -->
+    <div id="instructions-page" class="page instructions-bg hidden">
+        <div class="card">
+            <h3>📋 Instructions 📋</h3>
+
+            <div class="instruction-item" style="animation-delay: 0s;">
+                <span class="instruction-icon">🎯</span>
+                <p class="instruction-text">You are going to take this multiple intelligence test so be prepared!</p>
+            </div>
+            <div class="instruction-item" style="animation-delay: 0.1s;">
+                <span class="instruction-icon">💭</span>
+                <p class="instruction-text">You will be asked normal questions which is NOT related to your studies but
+                    to measure your area of interest. Don't ask help from parents or anyone else - just mark the options
+                    that you have in your mind!</p>
+            </div>
+            <div class="instruction-item" style="animation-delay: 0.2s;">
+                <span class="instruction-icon">🤝</span>
+                <p class="instruction-text">Take assistance from your parent if you have difficulty in understanding the
+                    questions but DON'T take help from parents to give answer because the answers are needed to
+                    understand YOU, not parents!</p>
+            </div>
+            <div class="instruction-item" style="animation-delay: 0.3s;">
+                <span class="instruction-icon">⚠️</span>
+                <p class="instruction-text">Once test is started, DO NOT go back or exit until you finish the test!</p>
+            </div>
+            <div class="instruction-item" style="animation-delay: 0.4s;">
+                <span class="instruction-icon">⏱️</span>
+                <p class="instruction-text">50 questions will be asked with 4 options for each. Try to complete one
+                    answer within a minute!</p>
+            </div>
+            <div class="instruction-item" style="animation-delay: 0.5s;">
+                <span class="instruction-icon">📞</span>
+                <p class="instruction-text">If you face any difficulty or problems, contact the admin or your coach -
+                    they will give you instructions!</p>
+            </div>
+            <div class="instruction-item" style="animation-delay: 0.6s;">
+                <span class="instruction-icon">1️⃣</span>
+                <p class="instruction-text">Take the test ONLY ONE TIME and do not take it again once it is completed.
+                    Think twice before answering because there is NO SECOND CHANCE!</p>
+            </div>
+            <div class="instruction-item" style="animation-delay: 0.7s;">
+                <span class="instruction-icon">✅</span>
+                <p class="instruction-text">Select ONLY ONE option for each question!</p>
+            </div>
+
+            <div class="highlight-box">
+                <p>🌟 If you have read all the instructions, press Continue to take the test! 🌟</p>
+            </div>
+
+            <button id="continue-btn" class="btn btn-primary">Continue ➡️</button>
+        </div>
+    </div>
+
+    <!-- Test Page -->
+    <div id="test-page" class="page test-bg hidden">
+        <div class="card">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar" style="width: 2%;">
+                    <span class="progress-text" id="progress-text">1/50</span>
+                </div>
+            </div>
+
+            <div class="question-info">
+                <span class="question-badge" id="question-badge">Question 1 of 50</span>
+                <span class="user-name" id="display-name">👤 Student</span>
+            </div>
+
+            <div class="question-box">
+                <p class="question-text" id="question-text">Loading question...</p>
+            </div>
+
+            <div class="options-grid" id="options-grid"></div>
+
+            <button id="submit-btn" class="btn btn-disabled" disabled>Select an option</button>
+        </div>
+    </div>
+
+    <!-- Loading Page -->
+    <div id="loading-page" class="page loading-bg hidden">
+        <div class="card" style="text-align: center;">
+            <h3>📤 Saving Your Responses...</h3>
+            <div class="spinner"></div>
+            <p style="color: white; font-size: 1.1rem;">Please wait while we record your answers!</p>
+        </div>
+    </div>
+
+    <!-- Complete Page -->
+    <div id="complete-page" class="page complete-bg hidden">
+        <div class="card">
+            <span class="success-icon">🎉</span>
+            <h3 style="margin-top: 20px;">Congratulations!</h3>
+
+            <div class="stars">
+                <span class="star" style="animation-delay: 0s;">🌟</span>
+                <span class="star" style="animation-delay: 0.2s;">⭐</span>
+                <span class="star" style="animation-delay: 0.4s;">✨</span>
+                <span class="star" style="animation-delay: 0.6s;">💫</span>
+                <span class="star" style="animation-delay: 0.8s;">🌟</span>
+            </div>
+
+            <div class="message-box">
+                <p>Your response has been recorded! ✅</p>
+                <p>You can now leave the page and contact your admin or coach for your results!</p>
+            </div>
+
+            <div class="highlight-box">
+                <p>📞 Contact your admin for details about your intelligence type!</p>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- Error Page -->
+    <div id="error-page" class="page loading-bg hidden">
+        <div class="card" style="text-align: center;">
+            <span style="font-size: 4rem;">😟</span>
+            <h3 style="margin-top: 20px;">Oops! Something went wrong</h3>
+            <div class="error-box">
+                <p id="error-message">Failed to save your response. Please try again.</p>
+            </div>
+            <button id="retry-btn" class="btn btn-primary" style="margin-top: 20px;">Try Again 🔄</button>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // 🔧 CONFIGURATION - REPLACE WITH YOUR URL
+        // ============================================
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxtriyf_9T12O5hr0_CocFcBRZD4e1mcazjXgdHGnytsd9etTv4w91tqsbul43Es7c8/exec';
+        // ============================================
+
+        const questionsData = [
+            { question_number: 1, question: "At a busy railway station, you notice:", options: { A: "The rhythm of train whistles", B: "The design/structure of the station", C: "The weather or trees outside", D: "The emotions of people saying goodbye" } },
+            { question_number: 2, question: "On a \"No Bags Day\" at school, you would prefer to:", options: { A: "Write a creative story", B: "Build a physical model", C: "Label and study plants", D: "Organize a team match" } },
+            { question_number: 3, question: "If you receive a \"Mystery Box\" as a gift, you:", options: { A: "Use logic to figure out how to open it", B: "Feel its weight and texture", C: "Imagine how to decorate it", D: "Think about the feelings of the person who gave it" } },
+            { question_number: 4, question: "To remember facts for an exam, you:", options: { A: "Read them out loud", B: "Draw diagrams or sketches", C: "Use flow-charts or patterns", D: "Walk around while reading" } },
+            { question_number: 5, question: "During a School Anniversary celebration, you would like to:", options: { A: "Manage the accounts/budget", B: "Decorate the stage", C: "Be the host/anchor", D: "Lead the waste management/eco-team" } },
+            { question_number: 6, question: "If you see a stray dog at the gate, your first instinct is to:", options: { A: "Observe its behaviour", B: "Want to play with it", C: "Notice its specific breed", D: "Try to understand how it feels" } },
+            { question_number: 7, question: "In a group chat with friends, you usually:", options: { A: "Use clever wordplay or jokes", B: "Observe everyone silently", C: "Resolve arguments between others", D: "Send voice notes because you like talking" } },
+            { question_number: 8, question: "If you are given a piece of clay, you:", options: { A: "Make a perfect geometric shape", B: "Enjoy the feel of it in your hands", C: "Sculpt a leaf or a bird", D: "Write a message or your name on it" } },
+            { question_number: 9, question: "Which superpower would you want?", options: { A: "Ability to talk to animals", B: "Ability to read minds", C: "Ability to do instant math", D: "Ability to mimic any sound" } },
+            { question_number: 10, question: "The best part of a movie for you is:", options: { A: "The lyrics and music", B: "The visual beauty/scenery", C: "The inner thoughts of characters", D: "The action and stunts" } },
+            { question_number: 11, question: "When you are bored in a lecture, you usually:", options: { A: "Tap a rhythm on the desk", B: "Doodle or draw in your book", C: "Make a \"To-Do\" list", D: "Observe the teacher's mood" } },
+            { question_number: 12, question: "When teaching a game to a child, you:", options: { A: "Tell them an exciting story about it", B: "Move their hands to show how it's done", C: "Draw the rules on paper", D: "Use logic to explain it step-by-step" } },
+            { question_number: 13, question: "If you get lost in a local bazaar (market), you:", options: { A: "Remember specific landmarks", B: "Ask a stranger for help", C: "Try to sense the direction yourself", D: "Build a map in your mind" } },
+            { question_number: 14, question: "Your favourite app would be:", options: { A: "A music streaming app", B: "A photography/editing app", C: "A notes or diary app", D: "A puzzle or strategy game" } },
+            { question_number: 15, question: "After meeting someone, you remember:", options: { A: "The exact words they said", B: "Their vibe or personality", C: "Their clothes and style", D: "Their gestures and movements" } },
+            { question_number: 16, question: "At a social service camp, you prefer to:", options: { A: "Do the writing/reporting work", B: "Sort and categorize supplies", C: "Listen to people's life stories", D: "Teach kids how to play a sport" } },
+            { question_number: 17, question: "On YouTube, you enjoy watching:", options: { A: "\"How it works\" videos", B: "Travel and nature vlogs", C: "Motivational/Self-growth videos", D: "Interviews and documentaries" } },
+            { question_number: 18, question: "When you see a broken radio, you:", options: { A: "Try to fix the machinery", B: "Wonder about the person who owned it", C: "Use the parts to make art", D: "Notice the sounds the buttons make" } },
+            { question_number: 19, question: "In an emergency, the first thing you grab from your room is:", options: { A: "Your personal diary", B: "Your headphones", C: "Your pet or a plant", D: "A trophy you won" } },
+            { question_number: 20, question: "At a wedding, you are most likely:", options: { A: "Dancing with the crowd", B: "Sitting alone and thinking", C: "Looking at the flowers and decor", D: "Making people laugh with jokes" } },
+            { question_number: 21, question: "In the school canteen, you tend to:", options: { A: "Organize the table neatly", B: "Listen to the background noises", C: "Watch the movement of insects", D: "Sit and daydream" } },
+            { question_number: 22, question: "To explain a concept to a friend, you use:", options: { A: "Metaphors or stories", B: "Acting or hand gestures", C: "Quick sketches/drawings", D: "Logical Step 1, Step 2, Step 3" } },
+            { question_number: 23, question: "Looking at a sunset makes you think of:", options: { A: "The colours and shades", B: "The habits of birds returning home", C: "Your life and future", D: "A song that fits the mood" } },
+            { question_number: 24, question: "A competition you are likely to win is:", options: { A: "Debate or Elocution", B: "Treasure Hunt", C: "Kabaddi or Cricket", D: "Social Service Award" } },
+            { question_number: 25, question: "With a new phone, you first:", options: { A: "Check the system settings", B: "Tap every button to feel the UI", C: "Check the screen/camera quality", D: "Read the About or manual" } },
+            { question_number: 26, question: "In a science lab, you enjoy:", options: { A: "Recording the data", B: "Doing the physical experiment", C: "Looking at microscopic patterns", D: "Working as a team" } },
+            { question_number: 27, question: "If you get 10 minutes of free time, you:", options: { A: "Chat with a friend", B: "Sit and daydream", C: "Whistle or hum a tune", D: "Solve a quick puzzle" } },
+            { question_number: 28, question: "While watching a cricket match, you notice:", options: { A: "Run-rates and statistics", B: "The movements and speed of players", C: "The energy of the crowd", D: "The condition of the pitch/ground" } },
+            { question_number: 29, question: "If you see someone upset in a market, you:", options: { A: "Feel their sadness yourself", B: "Wonder logically what happened", C: "Go and talk to them", D: "Observe them quietly from a distance" } },
+            { question_number: 30, question: "If you had to build a \"New World,\" you'd first build:", options: { A: "A grand library", B: "A nature park", C: "A theatre for arts", D: "A complex transport system" } },
+            { question_number: 31, question: "When you hear a new word, you:", options: { A: "Try to use it in a sentence", B: "Notice how it sounds", C: "Picture the word in your mind", D: "Remember the person who said it" } },
+            { question_number: 32, question: "To reduce stress, you prefer to:", options: { A: "Go for a run or play a sport", B: "Organize your room or desk", C: "Sit in total silence", D: "Spend time in a garden" } },
+            { question_number: 33, question: "At family gatherings, you are the one who:", options: { A: "Tells the best stories", B: "Helps in the kitchen/physical work", C: "Keeps the kids entertained", D: "Includes the shy people in the talk" } },
+            { question_number: 34, question: "With a treasure map, you:", options: { A: "Understand the symbols easily", B: "Lead and coordinate the team", C: "Enjoy the physical hike", D: "Decode the hidden text" } },
+            { question_number: 35, question: "If you were an animal, you'd be:", options: { A: "A Dolphin (Social)", B: "An Owl (Logical)", C: "A Cheetah (Physical)", D: "A Beaver (Organized)" } },
+            { question_number: 36, question: "In the school assembly, you notice:", options: { A: "The lyrics of the prayer", B: "The symmetry of the student lines", C: "The way the light hits the stage", D: "The quality of the speech" } },
+            { question_number: 37, question: "Seeing a large crane, you think of:", options: { A: "The physics of how it lifts", B: "The space it occupies in the city", C: "The feeling of operating it", D: "How it affects the trees/soil nearby" } },
+            { question_number: 38, question: "If a friend is crying, you first:", options: { A: "Comfort them with words", B: "Give them a hug", C: "Give them space to be alone", D: "Try to find a logical solution" } },
+            { question_number: 39, question: "The best way for you to learn a language is:", options: { A: "Learning grammar rules", B: "Watching movies to hear the sounds", C: "Talking to native people", D: "Writing it down repeatedly" } },
+            { question_number: 40, question: "At a festival, you love:", options: { A: "The colours and lights", B: "The drums and music", C: "The energy of the crowd", D: "The history/story behind it" } },
+            { question_number: 41, question: "Looking at a mechanical watch, you:", options: { A: "Notice the gears inside", B: "Admire the outer beauty", C: "Think of the person who made it", D: "Wonder how long it will last" } },
+            { question_number: 42, question: "A blank notebook is best used for:", options: { A: "Drawing and sketching", B: "Writing a secret diary", C: "Making lists and schedules", D: "Writing song lyrics or poems" } },
+            { question_number: 43, question: "If you find a strange stone, you:", options: { A: "Pick it up to feel its weight", B: "Try to identify what type of rock it is", C: "Keep it as a decoration", D: "Imagine how many years old it is" } },
+            { question_number: 44, question: "If you have to spend a weekend alone, you:", options: { A: "Happy reading books", B: "Feel bored and call friends", C: "Practice a hobby like art/music", D: "Clean and sort your things" } },
+            { question_number: 45, question: "While watching a dance, you notice:", options: { A: "The story being told", B: "The rhythm and beat", C: "The balance and stunts", D: "The costumes and lights" } },
+            { question_number: 46, question: "Your dream career must involve:", options: { A: "Numbers and data", B: "Helping and meeting people", C: "Nature and animals", D: "Your own creative ideas" } },
+            { question_number: 47, question: "In a debate, you rely on:", options: { A: "Facts and logic", B: "Emotional stories", C: "Confidence and body language", D: "Staying calm and silent inside" } },
+            { question_number: 48, question: "In a forest, you notice:", options: { A: "The sounds of birds", B: "The curves of the path", C: "The insects and moss", D: "Your own place in nature" } },
+            { question_number: 49, question: "While cooking, you:", options: { A: "Follow measurements exactly", B: "Cook by feel and instinct", C: "Make the plate look beautiful", D: "Cook with friends and chat" } },
+            { question_number: 50, question: "A perfect Sunday evening is:", options: { A: "Solving a hard puzzle", B: "Playing a sport", C: "Meditating or reflecting", D: "Meeting a group of friends" } }
+        ];
+
+        const intelligenceMapping = {
+            "Linguistic": ["2A", "4A", "7A", "12A", "14C", "16A", "19A", "22A", "24A", "31A", "33A", "39D", "40D", "42D", "47B"],
+            "Logical-Mathematical": ["3A", "5A", "9C", "12D", "14D", "17A", "18A", "21A", "22D", "25A", "26A", "28A", "35B", "37A", "41A", "42C", "46A", "47A", "49A", "50A"],
+            "Spatial-Visual": ["1B", "5B", "8A", "10B", "11B", "12C", "13D", "14B", "18C", "22C", "23A", "24B", "25C", "26C", "30D", "31C", "34A", "36B", "37B", "40A", "42A", "43C", "45D", "49C"],
+            "Kinesthetic": ["2D", "4D", "8B", "10D", "12B", "15D", "16D", "19D", "20A", "24C", "25B", "26B", "28B", "32A", "33B", "34C", "35C", "37C", "38B", "43A", "45C", "50B"],
+            "Musical": ["1A", "9D", "10A", "11A", "14A", "18D", "19B", "21B", "23D", "27C", "28C", "30C", "31B", "40B", "45B"],
+            "Interpersonal": ["1D", "7C", "13B", "15B", "16C", "17D", "24D", "27A", "29C", "33D", "34B", "35A", "38A", "39C", "44B", "46B", "49D", "50D"],
+            "Intrapersonal": ["3D", "7B", "17C", "19C", "20B", "21D", "23C", "27B", "29D", "32C", "38C", "44A", "46D", "47D", "50C"],
+            "Naturalist": ["1C", "2C", "6A", "6C", "9A", "17B", "21C", "23B", "26C", "28D", "30B", "32D", "35D", "37D", "43B", "43D", "46C", "48A", "48C"]
+        };
+
+        let userData = { name: '', class: '', phone: '' };
+        let currentQuestion = 0;
+        let answers = {};
+        let selectedOption = null;
+        let calculatedResult = null;
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#95E1D3', '#F38181', '#AA96DA', '#FCBAD3'];
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 20 + 10;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        function calculateCategory() {
+            const scores = {};
+            Object.keys(intelligenceMapping).forEach(type => scores[type] = 0);
+            Object.entries(answers).forEach(([qNum, option]) => {
+                const key = qNum + option;
+                Object.entries(intelligenceMapping).forEach(([type, keys]) => {
+                    if (keys.includes(key)) scores[type]++;
+                });
+            });
+            let maxType = "Linguistic", maxScore = 0;
+            Object.entries(scores).forEach(([type, score]) => {
+                if (score > maxScore) { maxScore = score; maxType = type; }
+            });
+            return { category: maxType, scores };
+        }
+
+        async function sendToGoogleSheets(data) {
+            // Check if URL is configured
+            if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                console.warn('Google Script URL not configured. Data will only be stored locally.');
+                return { success: true, message: 'Local storage only (Google Sheets not configured)' };
+            }
+
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                return { success: true };
+            } catch (error) {
+                console.error('Error sending to Google Sheets:', error);
+                throw error;
+            }
+        }
+
+        function loadQuestion() {
+            const q = questionsData[currentQuestion];
+            document.getElementById('progress-bar').style.width = ((currentQuestion + 1) / 50 * 100) + '%';
+            document.getElementById('progress-text').textContent = (currentQuestion + 1) + '/50';
+            document.getElementById('question-badge').textContent = 'Question ' + (currentQuestion + 1) + ' of 50';
+            document.getElementById('question-text').textContent = q.question;
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            const classes = ['option-a', 'option-b', 'option-c', 'option-d'];
+            const labels = ['A', 'B', 'C', 'D'];
+            Object.entries(q.options).forEach(([key, value], i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn ' + classes[i];
+                btn.innerHTML = '<span class="option-label">' + labels[i] + '</span><span class="option-text">' + value + '</span>';
+                btn.onclick = () => selectOption(key, btn);
+                grid.appendChild(btn);
+            });
+            selectedOption = null;
+            updateSubmitButton();
+        }
+
+        function selectOption(option, btn) {
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedOption = option;
+            updateSubmitButton();
+        }
+
+        function updateSubmitButton() {
+            const btn = document.getElementById('submit-btn');
+            if (selectedOption) {
+                btn.disabled = false;
+                btn.className = 'btn btn-primary';
+                btn.textContent = currentQuestion < 49 ? 'Next Question ➡️' : 'Finish Test 🎉';
+            } else {
+                btn.disabled = true;
+                btn.className = 'btn btn-disabled';
+                btn.textContent = 'Select an option';
+            }
+        }
+
+        async function submitAnswer() {
+            if (!selectedOption) return;
+            answers[currentQuestion + 1] = selectedOption;
+
+            if (currentQuestion < 49) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                // Test complete - calculate and submit
+                showPage('loading-page');
+
+                calculatedResult = calculateCategory();
+
+                // Prepare data for Google Sheets
+                const responseData = {
+                    timestamp: new Date().toISOString(),
+                    name: userData.name,
+                    class: userData.class,
+                    phone: userData.phone,
+                    category: calculatedResult.category,
+                    answers: answers,
+                    scores: calculatedResult.scores
+                };
+
+                try {
+                    await sendToGoogleSheets(responseData);
+
+                    // Also save locally as backup
+                    localStorage.setItem('mitest_' + userData.phone, JSON.stringify(responseData));
+
+                    // Show success
+
+                    showPage('complete-page');
+                } catch (error) {
+                    document.getElementById('error-message').textContent = 'Failed to save: ' + error.message;
+                    showPage('error-page');
+                }
+            }
+        }
+
+        async function retrySubmit() {
+            showPage('loading-page');
+
+            const responseData = {
+                timestamp: new Date().toISOString(),
+                name: userData.name,
+                class: userData.class,
+                phone: userData.phone,
+                category: calculatedResult.category,
+                answers: answers,
+                scores: calculatedResult.scores
+            };
+
+            try {
+                await sendToGoogleSheets(responseData);
+                localStorage.setItem('mitest_' + userData.phone, JSON.stringify(responseData));
+
+                showPage('complete-page');
+            } catch (error) {
+                document.getElementById('error-message').textContent = 'Failed to save: ' + error.message;
+                showPage('error-page');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            createParticles();
+
+            document.getElementById('registration-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                userData.name = document.getElementById('student-name').value.trim();
+                userData.class = document.getElementById('student-class').value.trim();
+                userData.phone = document.getElementById('student-phone').value.replace(/\D/g, '');
+                if (userData.name && userData.class && userData.phone) showPage('instructions-page');
+            });
+
+            document.getElementById('continue-btn').addEventListener('click', function () {
+                document.getElementById('display-name').textContent = '👤 ' + userData.name;
+                loadQuestion();
+                showPage('test-page');
+            });
+
+            document.getElementById('submit-btn').addEventListener('click', submitAnswer);
+            document.getElementById('retry-btn').addEventListener('click', retrySubmit);
+        });
+    </script>
+</body>
+
+</html>
